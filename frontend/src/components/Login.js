@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
+// Best practice: Define the API URL in one place
+const API_URL = 'https://sweet-shop-api-devarsh.onrender.com';
+
 function Login({ onLogin }) {
   const [formData, setFormData] = useState({
     username: '',
@@ -20,7 +23,7 @@ function Login({ onLogin }) {
     e.preventDefault();
     try {
       const endpoint = isRegister ? '/api/auth/register' : '/api/auth/login';
-      const response = await axios.post(`http://localhost:5000${endpoint}`, formData);
+      const response = await axios.post(`${API_URL}${endpoint}`, formData);
 
       // Save token to browser's local storage
       localStorage.setItem('token', response.data.token);

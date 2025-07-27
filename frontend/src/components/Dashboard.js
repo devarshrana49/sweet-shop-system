@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+// Best practice: Define the API URL in one place
+const API_URL = 'https://sweet-shop-api-devarsh.onrender.com';
+
 function Dashboard({ onLogout }) {
   const [sweets, setSweets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -19,11 +22,12 @@ function Dashboard({ onLogout }) {
 
   useEffect(() => {
     fetchSweets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchSweets = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/sweets', {
+      const response = await axios.get(`${API_URL}/api/sweets`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSweets(response.data);
@@ -40,7 +44,7 @@ function Dashboard({ onLogout }) {
   const handleAddSweet = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/sweets', newSweet, {
+      await axios.post(`${API_URL}/api/sweets`, newSweet, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -54,7 +58,7 @@ function Dashboard({ onLogout }) {
 
   const handlePurchase = async (sweetId) => {
     try {
-      await axios.post(`http://localhost:5000/api/sweets/${sweetId}/purchase`, 
+      await axios.post(`${API_URL}/api/sweets/${sweetId}/purchase`, 
         { quantity: 1 }, 
         { headers: { Authorization: `Bearer ${token}` } }
       );
