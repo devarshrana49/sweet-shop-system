@@ -16,12 +16,9 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/sweets', sweetRoutes);
 
-// This is the new part for production
+// Serve static files from React build for production
 if (process.env.NODE_ENV === 'production') {
-  // Serve the static files from the React app
   app.use(express.static(path.join(__dirname, '../frontend/build')));
-
-  // Handles any requests that don't match the ones above
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
   });
