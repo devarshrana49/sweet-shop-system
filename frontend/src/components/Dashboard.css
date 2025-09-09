@@ -1,0 +1,169 @@
+/* ===== Global Styles ===== */
+body {
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  margin: 0;
+  color: #333;
+  /* This is the new gradient background */
+  background: linear-gradient(135deg, #ff6b6b, #f06595, #cc5de8, #845ef7, #5c7cfa);
+  background-size: 400% 400%; /* Makes the gradient larger for animation */
+  animation: gradientAnimation 15s ease infinite; /* Animates the gradient */
+}
+
+/* ===== Header / Navbar ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 15px 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  background: linear-gradient(90deg, #4a6cf7, #6a11cb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.header span {
+  margin-right: 15px;
+}
+
+/* This new rule fixes the spacing in your header */
+.user-info {
+  display: flex;
+  align-items: center;
+}
+
+/* ===== Controls Container (Search, Add Button) ===== */
+.controls-container {
+  padding: 25px;
+  display: flex;
+  gap: 15px;
+}
+
+.search-input {
+  flex-grow: 1;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+/* ===== Main Dashboard Grid ===== */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 0 25px 25px 25px; /* Add padding to sides and bottom */
+}
+
+/* ===== Cards (For Sweets and Add Form) ===== */
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.card .value {
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #4a6cf7, #6a11cb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+}
+
+.card p {
+  margin: 4px 0;
+  font-size: 0.9rem;
+  color: #777;
+  flex-grow: 1; /* Pushes button to the bottom */
+}
+
+/* ===== Add Sweet Form ===== */
+.add-sweet-form {
+  margin: 0 25px 25px 25px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-grid input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  background: linear-gradient(90deg, #4a6cf7, #6a11cb);
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: opacity 0.2s ease;
+  margin-top: 10px; /* Give some space from the content above */
+}
+
+.btn:hover {
+  opacity: 0.85;
+}
+
+.btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* ===== Responsive Fix ===== */
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+  .header {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+/* This keyframe animation makes the background colors shift smoothly */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

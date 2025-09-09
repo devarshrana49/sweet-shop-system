@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Dashboard.css'; // Import the new CSS file
 
 // Best practice: Define the API URL in one place
-const API_URL = 'https://sweet-shop-api-devarsh.onrender.com';
+// Use the production URL from Netlify, but if it doesn't exist, use the local one.
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
 function Dashboard({ onLogout }) {
   const [sweets, setSweets] = useState([]);
@@ -58,8 +60,8 @@ function Dashboard({ onLogout }) {
 
   const handlePurchase = async (sweetId) => {
     try {
-      await axios.post(`${API_URL}/api/sweets/${sweetId}/purchase`, 
-        { quantity: 1 }, 
+      await axios.post(`${API_URL}/api/sweets/${sweetId}/purchase`,
+        { quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchSweets(); // Refresh the list
@@ -76,72 +78,66 @@ function Dashboard({ onLogout }) {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div style={{ padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h1>Sweet Shop Dashboard</h1>
-        <div>
-          <span style={{ marginRight: '15px' }}>Welcome, {user.username}!</span>
-          <button onClick={onLogout} style={{ padding: '5px 15px' }}>Logout</button>
+    <div>
+      <header className="header">
+        <h1>Sweet Shop</h1>  &nbsp; &nbsp; &nbsp;
+        {/* This div now has the correct className */}
+        <div className="user-info">
+          <span>Welcome, {user.username}!</span>
+          <button onClick={onLogout} className="btn">Logout</button>
         </div>
-      </div>
+      </header>
 
-      <div style={{ marginBottom: '20px' }}>
+      <div className="controls-container">
         <input
           type="text"
           placeholder="Search sweets..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ padding: '10px', width: '300px', marginRight: '15px' }}
+          className="search-input"
         />
-        <button 
+        <button
           onClick={() => setShowAddForm(!showAddForm)}
-          style={{ padding: '10px 20px', backgroundColor: '#28a745', color: 'white', border: 'none', cursor: 'pointer' }}
+          className="btn"
         >
           {showAddForm ? 'Cancel' : 'Add Sweet'}
         </button>
       </div>
 
       {showAddForm && (
-        <div style={{ backgroundColor: '#f8f9fa', padding: '20px', marginBottom: '20px', borderRadius: '5px' }}>
+        <div className="add-sweet-form card">
           <h3>Add New Sweet</h3>
-          <form onSubmit={handleAddSweet} style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px' }}>
-            <input type="text" placeholder="Sweet Name" value={newSweet.name} onChange={(e) => setNewSweet({...newSweet, name: e.target.value})} required style={{ padding: '10px' }} />
-            <input type="text" placeholder="Category" value={newSweet.category} onChange={(e) => setNewSweet({...newSweet, category: e.target.value})} required style={{ padding: '10px' }} />
-            <input type="number" step="0.01" placeholder="Price" value={newSweet.price} onChange={(e) => setNewSweet({...newSweet, price: e.target.value})} required style={{ padding: '10px' }} />
-            <input type="number" placeholder="Quantity" value={newSweet.quantity} onChange={(e) => setNewSweet({...newSweet, quantity: e.target.value})} required style={{ padding: '10px' }} />
-            <input type="text" placeholder="Description" value={newSweet.description} onChange={(e) => setNewSweet({...newSweet, description: e.target.value})} style={{ padding: '10px', gridColumn: 'span 2' }} />
-            <button type="submit" style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', border: 'none', gridColumn: 'span 2', cursor: 'pointer' }}>
+          <form onSubmit={handleAddSweet} className="form-grid">
+            <input type="text" placeholder="Sweet Name" value={newSweet.name} onChange={(e) => setNewSweet({ ...newSweet, name: e.target.value })} required />
+            <input type="text" placeholder="Category" value={newSweet.category} onChange={(e) => setNewSweet({ ...newSweet, category: e.target.value })} required />
+            <input type="number" step="0.01" placeholder="Price" value={newSweet.price} onChange={(e) => setNewSweet({ ...newSweet, price: e.target.value })} required />
+            <input type="number" placeholder="Quantity" value={newSweet.quantity} onChange={(e) => setNewSweet({ ...newSweet, quantity: e.target.value })} required />
+            <input type="text" placeholder="Description" value={newSweet.description} onChange={(e) => setNewSweet({ ...newSweet, description: e.target.value })} className="full-width" />
+            <button type="submit" className="btn full-width">
               Add Sweet
             </button>
           </form>
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
+      <main className="dashboard">
         {filteredSweets.map(sweet => (
-          <div key={sweet.id} style={{ border: '1px solid #ddd', padding: '15px', borderRadius: '5px' }}>
+          <div key={sweet.id} className="card">
             <h3>{sweet.name}</h3>
+            <div className="value">${sweet.price}</div>
             <p><strong>Category:</strong> {sweet.category}</p>
-            <p><strong>Price:</strong> ${sweet.price}</p>
             <p><strong>Available:</strong> {sweet.quantity}</p>
-            <p><strong>Description:</strong> {sweet.description}</p>
-            <button 
+            <p>{sweet.description}</p>
+            <button
               onClick={() => handlePurchase(sweet.id)}
               disabled={sweet.quantity === 0}
-              style={{ 
-                padding: '10px 20px', 
-                backgroundColor: sweet.quantity > 0 ? '#ffc107' : '#6c757d', 
-                color: 'white', 
-                border: 'none',
-                borderRadius: '3px',
-                cursor: sweet.quantity > 0 ? 'pointer' : 'not-allowed'
-              }}
+              className="btn"
             >
               {sweet.quantity > 0 ? 'Purchase' : 'Out of Stock'}
             </button>
           </div>
         ))}
-      </div>
+      </main>
     </div>
   );
 }
